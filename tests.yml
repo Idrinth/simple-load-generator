@@ -1,0 +1,24 @@
+base: https://localhost
+users:
+  - replacements:
+      a: fail
+    headers:
+      test: 1st
+  - replacements:
+      a: ok
+    headers:
+      test: 2nd
+  - replacements:
+      a: qq
+    headers:
+      test: 3rd
+tests:
+  load homepage:
+    url: /?status={%a%}
+    threads: 10
+    duration: 10
+  load imprint:
+    url: /impressum/?status={%a%}
+    threads: 10
+    duration: 10
+  
