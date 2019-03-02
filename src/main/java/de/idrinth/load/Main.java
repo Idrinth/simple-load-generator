@@ -1,6 +1,7 @@
 package de.idrinth.load;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class Main
 {
@@ -8,20 +9,23 @@ public class Main
     {
         try {
             var files = args.length == 0 ? "tests.yml" : args[0];
-            System.out.println("URL Errors/Requests Duration Fastest Slowest");
-            for(var result : new Runner(files).run()) {
+            var it = new Runner(files).run();
+            System.out.println();
+            System.out.println("URL Errors Requests Duration Fastest Slowest");
+            for(var result : it) {
+                var res = result.get();
                 System.out.printf(
-                    "%s %d/%d %f %f %f\n",
-                    result.getUrl(),
-                    result.getErrors(),
-                    result.getRequests(),
-                    result.getDuration(),
-                    result.getFastest(),
-                    result.getSlowest()
+                    "%s %d %d %f %f %f\n",
+                    res.getUrl(),
+                    res.getErrors(),
+                    res.getRequests(),
+                    res.getDuration(),
+                    res.getFastest(),
+                    res.getSlowest()
                 );
             }
-        } catch (IOException ex) {
-            System.err.print(ex);
+        } catch (IOException|ExecutionException|InterruptedException ex) {
+            System.err.println(ex);
         }
         System.out.println();
         System.exit(0);

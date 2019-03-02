@@ -7,9 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.RunnableFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -17,27 +17,27 @@ import org.apache.http.impl.client.HttpClients;
 
 public class RequestHandler
 {
-    public Result run(List<User> users, int perUser, String url, long duration)
+    public RunnableFuture<Result> run(List<User> users, int perUser, String url, long duration)
     {
+        var result = new ResultCollector(url);
         try {
             ExecutorService executor = Executors.newFixedThreadPool(users.size() * perUser);
-            var result = new ResultCollector(url);
             users.forEach((user) -> {
                 String userUrl = url;
                 for (String search : user.getReplacements().keySet()) {
                     userUrl = userUrl.replaceAll(search, user.getReplacements().get(search));
                 }
+                System.out.println("    " + userUrl + " x" + perUser);
                 for (int i=0; i < perUser; i++) {
                     executor.submit(new RestartingRequest(user.getHeaders(), userUrl, result, LocalTime.now().plusSeconds((int) (duration*1.01))));
                 }
             });
             executor.shutdown();
-            executor.awaitTermination(duration, TimeUnit.SECONDS);
-            return result.calculate();
+            executor.awaitTermination(duration*2, TimeUnit.SECONDS);
         } catch (InterruptedException ex) {
-           // Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex);
         }
-        return new Result(url, 0, 1, 0, 0, 0);
+        return new FutureTask<>(result);
     }
     private class RestartingRequest implements Runnable {
         private final ResultCollector result;
@@ -62,7 +62,7 @@ public class RequestHandler
                 try (CloseableHttpResponse response = client.execute(request)) {
                     result.add(response.getStatusLine().getStatusCode(), Duration.between(start, LocalTime.now()));
                 } catch (IOException ex) {
-                    //Logger.getLogger(RequestHandler.class.getName()).log(Level.SEVERE, null, ex);
+                    System.err.println(ex);
                     result.add(-1, Duration.between(start, LocalTime.now()));
                 }
             }

@@ -1,6 +1,7 @@
 package de.idrinth.load;
 
 import java.util.List;
+import java.util.concurrent.RunnableFuture;
 
 public class TestCase {
     private static final long DEFAULT_DURATION = 60;
@@ -16,9 +17,8 @@ public class TestCase {
         this.duration = duration > 0 ? duration : DEFAULT_DURATION;
         this.threads = threads > 0 ? threads : DEFAULT_THREADS;
     }
-    
 
-    public Result test() {
+    public RunnableFuture<Result> test() {
         return new RequestHandler().run(users, threads, url, duration);
     }
 }

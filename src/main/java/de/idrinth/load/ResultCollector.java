@@ -2,9 +2,11 @@ package de.idrinth.load;
 
 import java.time.Duration;
 import java.util.Queue;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-class ResultCollector {
+class ResultCollector implements Callable
+{
     private final String url;
     private final Queue<Set> list = new ConcurrentLinkedQueue<>();
 
@@ -16,7 +18,8 @@ class ResultCollector {
     {
         list.add(new Set(status, duration));
     }
-    public Result calculate()
+    @Override
+    public Result call()
     {
         double min = 0;
         double sum = 0;
@@ -31,6 +34,9 @@ class ResultCollector {
             max = duration > max ? duration : max;
             if (set.status < 200 || set.status > 299) {
                 errors++;
+                //System.err.print("E");
+            } else {
+                //System.out.print(".");
             }
         }
         return new Result(url, count, errors, sum, min, max);
