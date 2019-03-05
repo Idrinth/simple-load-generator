@@ -17,11 +17,12 @@ import org.apache.http.impl.client.HttpClients;
 
 public class RequestHandler
 {
-    public RunnableFuture<Result> run(List<User> users, int perUser, String url, long duration)
+    public RunnableFuture<Result> run(List<User> users, int perUser, String url, String name, long duration)
     {
-        var result = new ResultCollector(url);
+        int parallel = users.size() * perUser;
+        var result = new ResultCollector(url, name, parallel);
         try {
-            ExecutorService executor = Executors.newFixedThreadPool(users.size() * perUser);
+            ExecutorService executor = Executors.newFixedThreadPool(parallel);
             users.forEach((user) -> {
                 String userUrl = url;
                 for (String search : user.getReplacements().keySet()) {

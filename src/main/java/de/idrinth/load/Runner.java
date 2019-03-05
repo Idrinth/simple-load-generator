@@ -12,16 +12,16 @@ import org.yaml.snakeyaml.Yaml;
 
 public class Runner
 {
-    private List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
     private final String baseUrl;
-    private final Map<String, Object> tests;
-    public Runner(String filename) throws IOException
+    private final Map<String, Map> tests;
+    public Runner(File file) throws IOException
     {
         var yml = new Yaml();
-        Map<String, Object> loaded = yml.load(FileUtils.openInputStream(new File(filename)));
+        Map<String, Object> loaded = yml.load(FileUtils.openInputStream(file));
         baseUrl = (String) loaded.getOrDefault("base", "");
         getUsers((List<Map<String, Map<String, String>>>) loaded.get("users"));
-        tests = (Map) loaded.get("tests");
+        tests = (Map<String, Map>) loaded.get("tests");
     }
     private void getUsers(List<Map<String, Map<String, String>>> userData)
     {
@@ -43,16 +43,18 @@ public class Runner
     {
         System.out.println("Start: Running tests");
         List<RunnableFuture<Result>> results = new ProcessingList();
-        tests.keySet().stream().map((String name) -> (Map) tests.get(name)).forEachOrdered((test) -> {
-            System.out.println("  Start: testcase");
+        for(String name : tests.keySet()) {
+            System.out.println("  Start: testcase "+name);
+            Map test = (Map) tests.get(name);
             results.add(new TestCase(
                     users,
                     baseUrl + test.getOrDefault("url", ""),
+                    name,
                     (int) test.getOrDefault("duration", 0),
                     (int) test.getOrDefault("threads", 0)
             ).test());
-            System.out.println("  End: testcase");
-        });
+            System.out.println("  End: testcase "+name);
+        }
         System.out.println("End: Running tests");
         return results;
     }

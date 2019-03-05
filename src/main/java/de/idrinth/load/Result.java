@@ -2,19 +2,31 @@ package de.idrinth.load;
 
 public class Result {
     private final String url;
+    private final String name;
+    private final int parallel;
     private final long requests;
     private final long errors;
-    private final double duration;
-    private final double fastest;
-    private final double slowest;
+    private final long duration;
+    private final long fastest;
+    private final long slowest;
 
-    public Result(String url, long requests, long errors, double duration, double fastest, double slowest) {
+    public Result(String name, String url, int parallel, long requests, long errors, long duration, long fastest, long slowest) {
+        this.name = name;
         this.url = url;
+        this.parallel = parallel;
         this.requests = requests;
         this.errors = errors;
         this.duration = duration;
         this.fastest = fastest;
         this.slowest = slowest;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getParallel() {
+        return parallel;
     }
 
     public long getErrors() {
@@ -29,16 +41,23 @@ public class Result {
         return requests;
     }
 
-    public double getDuration() {
+    public long getDuration() {
         return duration;
     }
 
-    public double getFastest() {
+    public long getAverage() {
+        return duration/requests;
+    }
+
+    public long getRequestsPerSecond() {
+        return requests/(duration/1000000000);
+    }
+
+    public long getFastest() {
         return fastest;
     }
 
-    public double getSlowest() {
+    public long getSlowest() {
         return slowest;
     }
-    
 }
