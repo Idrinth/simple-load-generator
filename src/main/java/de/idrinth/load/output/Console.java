@@ -7,17 +7,10 @@ import java.text.NumberFormat;
 import java.util.Locale;
 import javax.xml.transform.TransformerException;
 
-public class Console implements Output
+public class Console extends BaseOutput
 {
     private final NumberFormat formatter = NumberFormat.getIntegerInstance(Locale.ENGLISH);
-    private static String getSuite(File config) throws IOException
-    {
-        var name = config.getName();
-        if (name.contains(".")) {
-            name = name.substring(0, name.indexOf("."));
-        }
-        return name;
-    }
+
     @Override
     public void process(File file) throws IOException
     {
