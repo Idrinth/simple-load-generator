@@ -49,8 +49,8 @@ public class Result {
         return duration/requests;
     }
 
-    public long getRequestsPerSecond() {
-        return requests/(duration/1000000000);
+    public double getRequestsPerSecond() {
+        return requests/duration*1000000000;
     }
 
     public long getFastest() {

@@ -66,6 +66,10 @@ public class Xml extends BaseOutput
     {
         return build(name, String.valueOf(value));
     }
+    private Element build(String name, double value)
+    {
+        return build(name, String.valueOf(value));
+    }
     @Override
     public void write() throws TransformerException, IOException
     {
