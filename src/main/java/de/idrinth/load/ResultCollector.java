@@ -26,19 +26,19 @@ class ResultCollector implements Callable
     @Override
     public Result call()
     {
-        long min = 0;
-        long sum = 0;
-        long count = 0;
-        long errors = 0;
-        long max = 0;
+        BigDecimal min = BigDecimal.ZERO;
+        BigDecimal sum = BigDecimal.ZERO;
+        BigDecimal count = BigDecimal.ZERO;
+        BigDecimal errors = BigDecimal.ZERO;
+        BigDecimal max = BigDecimal.ZERO;
         for (Set set : list) {
-            count++;
-            long duration = set.duration.getSeconds()*1000000000 + set.duration.getNano();
-            sum += duration;
-            min = min == 0 || duration < min ? duration : min;
-            max = duration > max ? duration : max;
+            count = count.add(BigDecimal.ONE);
+            BigDecimal duration = BigDecimal.valueOf(set.duration.getSeconds()).multiply(BigDecimal.valueOf(1000000000)).add(BigDecimal.valueOf(set.duration.getNano()));
+            sum = sum.add(duration);
+            min = min.equals(BigDecimal.ZERO) || min.compareTo(duration) == 1 ? duration : min;
+            max = duration.compareTo(max) == 1 ? duration : max;
             if (set.status < 200 || set.status > 299) {
-                errors++;
+                errors = errors.add(BigDecimal.ONE);
             }
         }
         return new Result(name, url, parallel, count, errors, sum, min, max);

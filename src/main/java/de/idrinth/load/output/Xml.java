@@ -4,6 +4,7 @@ import de.idrinth.load.Result;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -58,17 +59,13 @@ public class Xml extends BaseOutput
         element.appendChild(document.createTextNode(value));
         return element;
     }
-    private Element build(String name, long value)
-    {
-        return build(name, String.valueOf(value));
-    }
     private Element build(String name, int value)
     {
         return build(name, String.valueOf(value));
     }
-    private Element build(String name, double value)
+    private Element build(String name, BigDecimal value)
     {
-        return build(name, String.valueOf(value));
+        return build(name, value.toPlainString());
     }
     @Override
     public void write() throws TransformerException, IOException

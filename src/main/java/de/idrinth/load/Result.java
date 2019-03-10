@@ -1,16 +1,27 @@
 package de.idrinth.load;
 
+import java.math.BigDecimal;
+
 public class Result {
     private final String url;
     private final String name;
     private final int parallel;
-    private final long requests;
-    private final long errors;
-    private final long duration;
-    private final long fastest;
-    private final long slowest;
+    private final BigDecimal requests;
+    private final BigDecimal errors;
+    private final BigDecimal duration;
+    private final BigDecimal fastest;
+    private final BigDecimal slowest;
 
-    public Result(String name, String url, int parallel, long requests, long errors, long duration, long fastest, long slowest) {
+    public Result(
+        String name,
+        String url,
+        int parallel,
+        BigDecimal requests,
+        BigDecimal errors,
+        BigDecimal duration,
+        BigDecimal fastest,
+        BigDecimal slowest
+    ) {
         this.name = name;
         this.url = url;
         this.parallel = parallel;
@@ -29,7 +40,7 @@ public class Result {
         return parallel;
     }
 
-    public long getErrors() {
+    public BigDecimal getErrors() {
         return errors;
     }
 
@@ -37,27 +48,27 @@ public class Result {
         return url;
     }
 
-    public long getRequests() {
+    public BigDecimal getRequests() {
         return requests;
     }
 
-    public long getDuration() {
+    public BigDecimal getDuration() {
         return duration;
     }
 
-    public long getAverage() {
-        return duration/requests;
+    public BigDecimal getAverage() {
+        return duration.divide(requests, duration.scale());
     }
 
-    public double getRequestsPerSecond() {
-        return requests/duration*1000000000;
+    public BigDecimal getRequestsPerSecond() {
+        return requests.divide(duration, requests.scale()).multiply(BigDecimal.valueOf(1000000000));
     }
 
-    public long getFastest() {
+    public BigDecimal getFastest() {
         return fastest;
     }
 
-    public long getSlowest() {
+    public BigDecimal getSlowest() {
         return slowest;
     }
 }
