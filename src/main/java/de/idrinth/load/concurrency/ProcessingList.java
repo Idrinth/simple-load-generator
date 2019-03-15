@@ -1,5 +1,6 @@
-package de.idrinth.load;
+package de.idrinth.load.concurrency;
 
+import de.idrinth.load.Result;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;

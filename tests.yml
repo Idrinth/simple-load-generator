@@ -1,24 +1,31 @@
-base: https://localhost
+base: http://localhost/?status={%a%}
 users:
   - replacements:
       a: fail
     headers:
       test: 1st
+    cookies:
+      my_sess: 1st
   - replacements:
       a: ok
     headers:
       test: 2nd
+    cookies:
+      my_sess: 2nd
   - replacements:
       a: qq
     headers:
       test: 3rd
+    cookies:
+      my_sess: 3rd
 tests:
-  load homepage:
-    url: /?status={%a%}
+  case 1:
     threads: 10
-    duration: 10
-  load imprint:
-    url: /impressum/?status={%a%}
+    duration: 25
+  case 2:
     threads: 10
-    duration: 10
+    duration: 25
+  case 3:
+    threads: 10
+    duration: 25
   

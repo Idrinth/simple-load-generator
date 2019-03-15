@@ -1,26 +1,33 @@
 package de.idrinth.load;
 
+import de.idrinth.load.concurrency.Request;
+import de.idrinth.load.concurrency.ThreadPool;
 import java.util.List;
+import java.util.concurrent.FutureTask;
 import java.util.concurrent.RunnableFuture;
 
-public class TestCase {
-    private static final long DEFAULT_DURATION = 60;
-    private static final int DEFAULT_THREADS = 5;
-    private final List<User> users;
-    private final String url;
-    private final String name;
-    private final long duration;
-    private final int threads;
-
-    public TestCase(List<User> users, String url, String name, long duration, int threads) {
-        this.url = url;
-        this.users = users;
-        this.duration = duration > 0 ? duration : DEFAULT_DURATION;
-        this.threads = threads > 0 ? threads : DEFAULT_THREADS;
-        this.name = name;
-    }
-
-    public RunnableFuture<Result> test() {
-        return new RequestHandler().run(users, threads, url, name, duration);
+class TestCase
+{
+    public RunnableFuture<Result> run(List<User> users, int perUser, String url, String name, long duration)
+    {
+        int parallel = users.size() * perUser;
+        var result = new ResultCollector(url, name, parallel);
+        try {
+            var executor = new ThreadPool(parallel);
+            users.forEach((user) -> {
+                String userUrl = url;
+                for (String search : user.getReplacements().keySet()) {
+                    userUrl = userUrl.replaceAll(search, user.getReplacements().get(search));
+                }
+                System.out.println("    " + userUrl + " x" + perUser);
+                for (int i=0; i < perUser; i++) {
+                    executor.add(new Request(user.getHeaders(), userUrl, result));
+                }
+            });
+            executor.process(duration);
+        } catch (InterruptedException ex) {
+            System.err.println(ex);
+        }
+        return new FutureTask<>(result);
     }
 }

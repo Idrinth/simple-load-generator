@@ -5,8 +5,9 @@ import de.idrinth.load.Result;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
 
-public class Csv extends BaseOutput
+class Csv extends BaseOutput
 {
     private final CSVWriter csv;
     private String suite = "";
@@ -23,7 +24,9 @@ public class Csv extends BaseOutput
                 "Requests",
                 "Average(ns)",
                 "Fastest(ns)",
-                "Slowest(ns)"
+                "Slowest(ns)",
+                "Duration(ns)",
+                "R/s"
             },
             true
         );
@@ -44,7 +47,9 @@ public class Csv extends BaseOutput
             String.valueOf(result.getRequests()),
             String.valueOf(result.getAverage()),
             String.valueOf(result.getFastest()),
-            String.valueOf(result.getSlowest())
+            String.valueOf(result.getSlowest()),
+            String.valueOf(result.getDuration()),
+            String.valueOf(result.getRequestsPerSecond())
         });
     }
     @Override

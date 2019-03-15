@@ -1,12 +1,13 @@
 package de.idrinth.load;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.Queue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-class ResultCollector implements Callable
+public class ResultCollector implements Callable
 {
     private final String url;
     private final String name;

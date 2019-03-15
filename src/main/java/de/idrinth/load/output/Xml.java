@@ -19,7 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Element;
 
-public class Xml extends BaseOutput
+class Xml extends BaseOutput
 {
     private final org.w3c.dom.Document document;
 

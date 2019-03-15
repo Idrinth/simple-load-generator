@@ -1,6 +1,7 @@
 package de.idrinth.load;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 public class Result {
     private final String url;
@@ -53,15 +54,15 @@ public class Result {
     }
 
     public BigDecimal getDuration() {
-        return duration;
+        return duration.divide(BigDecimal.valueOf(parallel), duration.scale(), RoundingMode.HALF_DOWN);
     }
 
     public BigDecimal getAverage() {
-        return duration.divide(requests, duration.scale());
+        return duration.divide(requests, duration.scale(), RoundingMode.HALF_UP);
     }
 
     public BigDecimal getRequestsPerSecond() {
-        return requests.divide(duration, requests.scale()).multiply(BigDecimal.valueOf(1000000000));
+        return requests.divide(duration, requests.scale(), RoundingMode.DOWN).multiply(BigDecimal.valueOf(1000000000));
     }
 
     public BigDecimal getFastest() {
