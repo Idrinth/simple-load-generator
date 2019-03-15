@@ -3,8 +3,6 @@ package de.idrinth.load.output;
 import de.idrinth.load.Result;
 import java.io.File;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.text.NumberFormat;
 import java.util.Locale;
 import javax.xml.transform.TransformerException;
@@ -47,5 +45,6 @@ class Console extends BaseOutput
     @Override
     public void write() throws TransformerException, IOException
     {
+        System.out.println();
     }
 }

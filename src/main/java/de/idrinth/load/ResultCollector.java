@@ -1,7 +1,6 @@
 package de.idrinth.load;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.time.Duration;
 import java.util.Queue;
 import java.util.concurrent.Callable;

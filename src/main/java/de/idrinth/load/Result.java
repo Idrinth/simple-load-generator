@@ -62,7 +62,7 @@ public class Result {
     }
 
     public BigDecimal getRequestsPerSecond() {
-        return requests.divide(duration, requests.scale(), RoundingMode.DOWN).multiply(BigDecimal.valueOf(1000000000));
+        return requests.multiply(BigDecimal.valueOf(1000000000)).divide(duration, requests.scale(), RoundingMode.DOWN);
     }
 
     public BigDecimal getFastest() {

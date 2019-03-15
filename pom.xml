@@ -47,7 +47,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>${de.idrinth.load.Main}</mainClass>
+                            <mainClass>${maven.main.class}</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -68,7 +68,7 @@
                     <finalName>${project.artifactId}</finalName>
                     <transformers>
                         <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                            <mainClass>${de.idrinth.load.Main}</mainClass>
+                            <mainClass>${maven.main.class}</mainClass>
                         </transformer>
                     </transformers>
                 </configuration>

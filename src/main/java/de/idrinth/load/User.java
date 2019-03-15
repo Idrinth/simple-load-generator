@@ -11,12 +11,14 @@ class User {
 
     public User(Map<String, String> headers, Map<String, String> replacements, Map<String, String> cookies) {
         this.headers = headers == null ? new HashMap<>() : headers;
-        replacements = replacements == null ? new HashMap<>() : replacements;
         this.cookies = cookies == null ? new HashMap<>() : cookies;
         this.replacements = new HashMap<>();
-        for (String replacement : replacements.keySet()) {
-            this.replacements.put(Pattern.quote("{%"+replacement+"%}"), replacements.get(replacement));
+        if (replacements == null) {
+            return;
         }
+        replacements.keySet().forEach((replacement) -> {
+            this.replacements.put(Pattern.quote("{%"+replacement+"%}"), replacements.get(replacement));
+        });
     }
     public User() {
         this(null, null, null);

@@ -5,7 +5,6 @@ import de.idrinth.load.Result;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.math.BigDecimal;
 
 class Csv extends BaseOutput
 {
