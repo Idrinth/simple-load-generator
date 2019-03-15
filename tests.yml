@@ -20,8 +20,10 @@ users:
       my_sess: 3rd
 tests:
   case 1:
+    method: put
+    body: tests.yml
     threads: 10
-    duration: 25
+    duration: 35
   case 2:
     threads: 10
     duration: 25

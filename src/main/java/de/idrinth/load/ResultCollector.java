@@ -10,13 +10,15 @@ public class ResultCollector implements Callable
 {
     private final String url;
     private final String name;
+    private final String method;
     private final int parallel;
     private final Queue<Set> list = new ConcurrentLinkedQueue<>();
 
-    public ResultCollector(String url, String name, int parallel) {
+    public ResultCollector(String url, String name, String method, int parallel) {
         this.url = url;
         this.name = name;
         this.parallel = parallel;
+        this.method = method;
     }
     
     public void add(int status, Duration duration)
@@ -41,7 +43,7 @@ public class ResultCollector implements Callable
                 errors = errors.add(BigDecimal.ONE);
             }
         }
-        return new Result(name, url, parallel, count, errors, sum, min, max);
+        return new Result(name, url, method, parallel, count, errors, sum, min, max);
     }
     private class Set
     {

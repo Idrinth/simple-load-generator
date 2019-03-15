@@ -8,10 +8,10 @@ import java.util.concurrent.RunnableFuture;
 
 class TestCase
 {
-    public RunnableFuture<Result> run(List<User> users, int perUser, String url, String name, long duration)
+    public RunnableFuture<Result> run(List<User> users, int perUser, String url, String name, long duration, String method, String body)
     {
         int parallel = users.size() * perUser;
-        var result = new ResultCollector(url, name, parallel);
+        var result = new ResultCollector(url, name, method, parallel);
         try {
             var executor = new ThreadPool(parallel);
             users.forEach((user) -> {
@@ -21,7 +21,7 @@ class TestCase
                 }
                 System.out.println("    " + userUrl + " x" + perUser);
                 for (int i=0; i < perUser; i++) {
-                    executor.add(new Request(user.getHeaders(), userUrl, result));
+                    executor.add(new Request(user.getHeaders(), userUrl, result, method, body));
                 }
             });
             executor.process(duration);

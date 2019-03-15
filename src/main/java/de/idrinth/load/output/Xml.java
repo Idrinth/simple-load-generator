@@ -44,6 +44,7 @@ class Xml extends BaseOutput
         var test = document.createElement("test");
         test.setAttribute("name", result.getName());
         test.appendChild(build("url", result.getUrl()));
+        test.appendChild(build("method", result.getMethod()));
         test.appendChild(build("parallel", result.getParallel()));
         test.appendChild(build("requests", result.getRequests()));
         test.appendChild(build("errors", result.getErrors()));

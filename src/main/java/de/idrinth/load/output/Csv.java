@@ -18,6 +18,7 @@ class Csv extends BaseOutput
             new String[] {
                 "TestSuite",
                 "Name", 
+                "Method",
                 "URL",
                 "Errors",
                 "Requests",
@@ -41,6 +42,7 @@ class Csv extends BaseOutput
         csv.writeNext(new String[] {
             suite,
             result.getName(),
+            result.getMethod(),
             result.getUrl(),
             String.valueOf(result.getErrors()),
             String.valueOf(result.getRequests()),

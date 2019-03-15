@@ -6,6 +6,7 @@ import java.math.RoundingMode;
 public class Result {
     private final String url;
     private final String name;
+    private final String method;
     private final int parallel;
     private final BigDecimal requests;
     private final BigDecimal errors;
@@ -16,6 +17,7 @@ public class Result {
     public Result(
         String name,
         String url,
+        String method,
         int parallel,
         BigDecimal requests,
         BigDecimal errors,
@@ -25,12 +27,17 @@ public class Result {
     ) {
         this.name = name;
         this.url = url;
+        this.method = method;
         this.parallel = parallel;
         this.requests = requests;
         this.errors = errors;
         this.duration = duration;
         this.fastest = fastest;
         this.slowest = slowest;
+    }
+
+    public String getMethod() {
+        return method;
     }
 
     public String getName() {

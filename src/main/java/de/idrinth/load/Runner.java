@@ -56,7 +56,9 @@ class Runner
                 selfBiggerZeroOrDefault((int) test.getOrDefault("threads", 0), DEFAULT_THREADS),
                 baseUrl + test.getOrDefault("url", ""),
                 name,
-                selfBiggerZeroOrDefault((int) test.getOrDefault("duration", 0), DEFAULT_DURATION)
+                selfBiggerZeroOrDefault((int) test.getOrDefault("duration", 0), DEFAULT_DURATION),
+                (String) test.getOrDefault("method", "get"),
+                (String) test.getOrDefault("body", "")
             ));
             System.out.println("  End: testcase "+name);
         }

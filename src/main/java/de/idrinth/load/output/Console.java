@@ -33,7 +33,7 @@ class Console extends BaseOutput
         System.out.printf(
             "%20s | %50s | %8s | %8s | %12s | %12s | %12s | %15s\n",
             result.getName(),
-            result.getUrl(),
+            result.getMethod() + " " + result.getUrl(),
             result.getErrors(),
             result.getRequests(),
             formatter.format(result.getAverage()),
