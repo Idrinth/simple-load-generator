@@ -2,15 +2,12 @@ package de.idrinth.load.validator;
 
 import java.util.Map;
 
-public class StatusCodeValidator implements ResponseValidator
+public class ContentTypeValidator implements ResponseValidator
 {
-    private final String intendedCode;
+    private final String mimeType;
 
-    public StatusCodeValidator(String intendedCode) {
-        this.intendedCode = intendedCode;
-    }
-    public StatusCodeValidator() {
-        this("200");
+    public ContentTypeValidator(String mimeType) {
+        this.mimeType = mimeType;
     }
 
     @Override
@@ -20,10 +17,10 @@ public class StatusCodeValidator implements ResponseValidator
 
     @Override
     public void validate(Map<String, String> headers) throws AssertionFailed {
-        if (!headers.get("@STATUS").equals(intendedCode)) {
+        if (!headers.get("content-type").contains(mimeType)) {
             throw new AssertionFailed(
                 this.getClass().getName(),
-                "Status code '"+headers.get("@STATUS")+"' doesn't match expected "+intendedCode
+                "Content Type '"+headers.get("content-type")+"' doesn't match expected "+mimeType
             );
         }
     }

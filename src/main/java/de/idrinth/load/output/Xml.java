@@ -59,7 +59,7 @@ class Xml extends BaseOutput
             failures.appendChild(msg);
         }
         test.appendChild(failures);
-        document.getLastChild().appendChild(test);
+        document.getDocumentElement().getLastChild().appendChild(test);
     }
     private Element build(String name, String value)
     {

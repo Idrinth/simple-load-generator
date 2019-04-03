@@ -65,7 +65,8 @@ public class Request implements Runnable {
             result.add(
                 Duration.between(start, LocalTime.now()),
                 response.getAllHeaders(),
-                response.getEntity()
+                response.getEntity(),
+                response.getStatusLine().getStatusCode()
             );
         } catch (IOException ex) {
             System.err.println(ex);

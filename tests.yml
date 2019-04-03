@@ -23,18 +23,19 @@ tests:
     method: put
     body: tests.yml
     threads: 1
-    duration: 5
+    duration: 10
     assert:
       de.idrinth.load.validator.JsonValidator: https://getcomposer.org/schema.json
   case 2:
     threads: 1
-    duration: 5
+    duration: 10
     assert:
-      de.idrinth.load.validator.XmlValidator: ''
       de.idrinth.load.validator.StatusCodeValidator: 200
+      de.idrinth.load.validator.ContentTypeValidator: 'text/html'
+      de.idrinth.load.validator.XmlValidator: ''
   case 3:
     threads: 1
-    duration: 5
+    duration: 10
     assert:
       de.idrinth.load.validator.RegExpValidator: something$
   

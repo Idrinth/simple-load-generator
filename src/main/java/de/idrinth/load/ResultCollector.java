@@ -34,9 +34,9 @@ public class ResultCollector implements Callable
         this.asserts = asserts;
     }
     
-    public void add(Duration duration, Header[] headers, HttpEntity body)
+    public void add(Duration duration, Header[] headers, HttpEntity body, int status)
     {
-        list.add(new CheckableSet(duration, headers, body, asserts));
+        list.add(new CheckableSet(duration, headers, body, status, asserts));
     }
     public void add(Exception exception)
     {
@@ -65,7 +65,7 @@ public class ResultCollector implements Callable
                 max = duration.compareTo(max) == 1 ? duration : max;
             } catch (Exception e) {
                 errors = errors.add(BigDecimal.ONE);
-                messages.put(e.getMessage(), messages.containsKey(e.getMessage())?messages.get(e.getMessage())+1:1);
+                messages.put(e.toString(), messages.containsKey(e.toString())?messages.get(e.toString())+1:1);
             }
         }
         return new Result(name, url, method, parallel, count, errors, sum, min, max, messages);
@@ -81,9 +81,10 @@ public class ResultCollector implements Callable
         private String body = null;
         private final List<ResponseValidator> validators;
 
-        public CheckableSet(Duration duration, Header[] headers, HttpEntity body, List<ResponseValidator> validators) {
+        public CheckableSet(Duration duration, Header[] headers, HttpEntity body, int status, List<ResponseValidator> validators) {
+            this.headers.put("@STATUS", String.valueOf(status));
             for (var header : headers) {
-                this.headers.put(header.getName(), header.getValue());
+                this.headers.put(header.getName().toLowerCase(), header.getValue());
             }
             this.duration = duration;
             if (null != body) {
