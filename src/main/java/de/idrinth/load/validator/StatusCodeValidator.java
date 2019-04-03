@@ -1,15 +1,25 @@
 package de.idrinth.load.validator;
 
+import java.util.Map;
+
 public class StatusCodeValidator implements ResponseValidator
 {
-    @Override
-    public void validate(String body, String[] headers) throws AssertionFailed {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private final String intendedCode;
+
+    public StatusCodeValidator(String intendedCode) {
+        this.intendedCode = intendedCode;
+    }
+    public StatusCodeValidator() {
+        this("200");
     }
 
     @Override
-    public void validate(String[] headers) throws AssertionFailed {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void validate(String body, Map<String, String> headers) throws AssertionFailed {
+        validate(headers);
     }
-    
+
+    @Override
+    public void validate(Map<String, String> headers) throws AssertionFailed {
+        System.out.print(headers);
+    }
 }

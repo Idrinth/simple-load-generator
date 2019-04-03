@@ -1,15 +1,22 @@
 package de.idrinth.load.validator;
 
+import java.util.Map;
+
 class JsonValidator implements ResponseValidator
 {
+    public JsonValidator(String schemaUrl) {
+    }
+    public JsonValidator() {
+    }
+    
     @Override
-    public void validate(String body, String[] headers) throws AssertionFailed {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void validate(String body, Map<String, String> headers) throws AssertionFailed {
+        
     }
 
     @Override
-    public void validate(String[] headers) throws AssertionFailed {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void validate(Map<String, String> headers) throws AssertionFailed {
+        throw new AssertionFailed(this.getClass().getName(), "empty body can't be json.");
     }
     
 }

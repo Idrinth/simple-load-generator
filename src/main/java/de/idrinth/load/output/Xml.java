@@ -52,6 +52,13 @@ class Xml extends BaseOutput
         test.appendChild(build("fastest", result.getFastest()));
         test.appendChild(build("slowest", result.getSlowest()));
         test.appendChild(build("requests_per_second", result.getRequestsPerSecond()));
+        var failures = document.createElement("failures");
+        for (String message : result.getMessages().keySet()) {
+            var msg = build("failure", message);
+            msg.setAttribute("count", result.getMessages().get(message).toString());
+            failures.appendChild(msg);
+        }
+        test.appendChild(failures);
         document.getLastChild().appendChild(test);
     }
     private Element build(String name, String value)

@@ -2,6 +2,7 @@ package de.idrinth.load;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Map;
 
 public class Result {
     private final String url;
@@ -13,6 +14,7 @@ public class Result {
     private final BigDecimal duration;
     private final BigDecimal fastest;
     private final BigDecimal slowest;
+    private final Map<String, Integer> messages;
 
     public Result(
         String name,
@@ -23,7 +25,8 @@ public class Result {
         BigDecimal errors,
         BigDecimal duration,
         BigDecimal fastest,
-        BigDecimal slowest
+        BigDecimal slowest,
+        Map<String, Integer> messages
     ) {
         this.name = name;
         this.url = url;
@@ -34,6 +37,7 @@ public class Result {
         this.duration = duration;
         this.fastest = fastest;
         this.slowest = slowest;
+        this.messages = messages;
     }
 
     public String getMethod() {
@@ -61,15 +65,27 @@ public class Result {
     }
 
     public BigDecimal getDuration() {
-        return duration.divide(BigDecimal.valueOf(parallel), duration.scale(), RoundingMode.HALF_DOWN);
+        try {
+            return duration.divide(BigDecimal.valueOf(parallel), duration.scale(), RoundingMode.HALF_DOWN);
+        } catch (ArithmeticException byZero) {
+            return BigDecimal.ZERO;
+        }
     }
 
     public BigDecimal getAverage() {
-        return duration.divide(requests, duration.scale(), RoundingMode.HALF_UP);
+        try {
+            return duration.divide(requests, duration.scale(), RoundingMode.HALF_UP);
+        } catch (ArithmeticException byZero) {
+            return BigDecimal.ZERO;
+        }
     }
 
     public BigDecimal getRequestsPerSecond() {
-        return requests.multiply(BigDecimal.valueOf(1000000000)).divide(duration, requests.scale(), RoundingMode.DOWN);
+        try {
+            return requests.multiply(BigDecimal.valueOf(1000000000)).divide(duration, requests.scale(), RoundingMode.DOWN);
+        } catch (ArithmeticException byZero) {
+            return BigDecimal.ZERO;
+        }
     }
 
     public BigDecimal getFastest() {
@@ -78,5 +94,9 @@ public class Result {
 
     public BigDecimal getSlowest() {
         return slowest;
+    }
+
+    public Map<String, Integer> getMessages() {
+        return messages;
     }
 }

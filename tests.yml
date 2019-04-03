@@ -1,4 +1,4 @@
-base: http://localhost/?status={%a%}
+base: http://idrinth.de/?status={%a%}
 users:
   - replacements:
       a: fail
@@ -22,12 +22,19 @@ tests:
   case 1:
     method: put
     body: tests.yml
-    threads: 10
-    duration: 35
+    threads: 1
+    duration: 5
+    assert:
+      de.idrinth.load.validator.JsonValidator: https://getcomposer.org/schema.json
   case 2:
-    threads: 10
-    duration: 25
+    threads: 1
+    duration: 5
+    assert:
+      de.idrinth.load.validator.XmlValidator: ''
+      de.idrinth.load.validator.StatusCodeValidator: 200
   case 3:
-    threads: 10
-    duration: 25
+    threads: 1
+    duration: 5
+    assert:
+      de.idrinth.load.validator.RegExpValidator: something$
   

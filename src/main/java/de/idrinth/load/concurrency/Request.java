@@ -62,10 +62,14 @@ public class Request implements Runnable {
     public void run() {
         var start = LocalTime.now();
         try (CloseableHttpResponse response = client.execute(request)) {
-            result.add(response.getStatusLine().getStatusCode(), Duration.between(start, LocalTime.now()));
+            result.add(
+                Duration.between(start, LocalTime.now()),
+                response.getAllHeaders(),
+                response.getEntity()
+            );
         } catch (IOException ex) {
             System.err.println(ex);
-            result.add(-1, Duration.between(start, LocalTime.now()));
+            result.add(ex);
         }
     }
 }

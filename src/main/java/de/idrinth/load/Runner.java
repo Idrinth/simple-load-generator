@@ -58,7 +58,8 @@ class Runner
                 name,
                 selfBiggerZeroOrDefault((int) test.getOrDefault("duration", 0), DEFAULT_DURATION),
                 (String) test.getOrDefault("method", "get"),
-                (String) test.getOrDefault("body", "")
+                (String) test.getOrDefault("body", ""),
+                (Map) test.getOrDefault("assert", new HashMap())
             ));
             System.out.println("  End: testcase "+name);
         }
